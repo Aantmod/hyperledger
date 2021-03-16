@@ -274,6 +274,22 @@ function deployCC() {
   fi
 }
 
+## Call the script to isntall and instantiate a chaincode on the channel
+function deploySmartFarm() {
+  scripts/deploySmartFarm.sh $CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE
+
+  if [ $? -ne 0 ]; then
+    fatalln "Deploying chaincode failed"
+  fi
+  # scripts/deploySmartFarm.sh $CHANNEL_NAME $CC_SRC_LANGUAGE $VERSION $CLI_DELAY $MAX_RETRY $VERBOSE
+
+  # if [ $? -ne 0 ]; then
+  #   echo "ERROR !!! Deploying chaincode failed"
+  #   exit 1
+  # fi
+
+  # exit 0
+}
 
 # Tear down running network
 function networkDown() {
@@ -450,6 +466,9 @@ elif [ "$MODE" == "restart" ]; then
   infoln "Restarting network"
 elif [ "$MODE" == "deployCC" ]; then
   infoln "deploying chaincode on channel '${CHANNEL_NAME}'"
+elif [ "$MODE" == "deploySmartFarm" ]; then
+  echo "deploying chaincode on channel '${CHANNEL_NAME}'"
+  echo
 else
   printHelp
   exit 1
@@ -461,6 +480,8 @@ elif [ "${MODE}" == "createChannel" ]; then
   createChannel
 elif [ "${MODE}" == "deployCC" ]; then
   deployCC
+elif [ "${MODE}" == "deploySmartFarm" ]; then
+  deploySmartFarm
 elif [ "${MODE}" == "down" ]; then
   networkDown
 else
